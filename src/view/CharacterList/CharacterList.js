@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./CharacterList.css";
 
 const CharacterList = () => {
-  const [characters, setCharacters] = useState([]); //to store the characters
+  const [characters, setCharacters] = useState([]);
   const [search, setSearch] = useState("");
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
-  // Function to fetch character data
-  //function is defined to make an asynchronous API call
   const fetchCharacterData = async () => {
     try {
       const response = await fetch("https://rickandmortyapi.com/api/character");
@@ -20,7 +19,6 @@ const CharacterList = () => {
     }
   };
 
-  // Function to filter characters based on the search query
   const filteredCharacters = characters.filter((character) => {
     return character.name.toLowerCase().includes(search.toLowerCase());
   });
@@ -28,6 +26,14 @@ const CharacterList = () => {
   useEffect(() => {
     fetchCharacterData();
   }, []);
+
+  const handleCharacterDetails = (character) => {
+    setSelectedCharacter(character);
+  };
+
+  const closeCharacterDetails = () => {
+    setSelectedCharacter(null);
+  };
 
   return (
     <div>
@@ -43,11 +49,29 @@ const CharacterList = () => {
           <li key={character.id}>
             <img src={character.image} alt={character.name} />
             <p>{character.name}</p>
-            <p>Status: {character.status}</p>
-            <p>Species: {character.species}</p>
+            {selectedCharacter === character ? (
+              <div>
+                <p>Status: {character.status}</p>
+                <p>Species: {character.species}</p>
+              </div>
+            ) : (
+              <button onClick={() => handleCharacterDetails(character)}>
+                Show Details
+              </button>
+            )}
           </li>
         ))}
       </ul>
+
+      {/* {selectedCharacter && (
+        <div className="character-details">
+          <button onClick={closeCharacterDetails}>Dismiss</button>
+          <h3>{selectedCharacter.name} Details</h3>
+          <img src={selectedCharacter.image} alt={selectedCharacter.name} />
+          <p>Status: {selectedCharacter.status}</p>
+          <p>Species: {selectedCharacter.species}</p>
+        </div>
+      )} */}
     </div>
   );
 };
