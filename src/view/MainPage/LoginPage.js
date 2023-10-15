@@ -1,23 +1,35 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../../service/AuthContext.';
-import './LoginPage.css';
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../service/AuthContext.";
+import "./LoginPage.css";
 
 const LoginPage = () => {
   const { login } = useContext(AuthContext);
   //using useState hook email & password is initialized
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-const {isLoggedIn} = useContext(AuthContext);
-console.log(isLoggedIn)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isLoggedIn } = useContext(AuthContext);
+  console.log(isLoggedIn);
   const handleLogin = () => {
-    if (email && password) {
-      if (email.includes('@') && password.length >= 7) {
-        login();
-      }
-    } else {
-      // Handle empty fields
+    if (email.trim() === "" || password.trim() === "") {
+      alert("Please fill in both email and password fields.");
+      return;
     }
-  }
+
+    if (!email.includes("@")) {
+      alert(
+        "Please enter a valid email address.For example name123@domain.com."
+      );
+      return;
+    }
+
+    if (password.length < 7) {
+      alert("Password should be at least 7 characters long.");
+      return;
+    }
+
+    alert("Login Success!");
+    login();
+  };
 
   return (
     <div className="login-container">
@@ -28,7 +40,6 @@ console.log(isLoggedIn)
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)} // Update the email state on input change
-          
         />
       </div>
       <div className="input-password">
@@ -42,6 +53,6 @@ console.log(isLoggedIn)
       <button onClick={handleLogin}>Login</button>
     </div>
   );
-}
+};
 
 export default LoginPage;

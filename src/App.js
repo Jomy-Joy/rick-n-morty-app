@@ -12,10 +12,12 @@ function App() {
   // Use the 'useContext' hook to access the 'AuthContext' and get the 'isLoggedIn' value.
   return (
     <div className="App">
-      <AuthProvider> {/* Wrap the components in the 'AuthProvider' to provide authentication context. */}
+      <AuthProvider>
+        {" "}
+        {/* Wrap the components in the 'AuthProvider' to provide authentication context. */}
         <Header />
         {isLoggedIn ? <CharacterList /> : <MainPage />}
-         {/* Conditional rendering: 
+        {/* Conditional rendering: 
           - If 'isLoggedIn' is true, render the 'CharacterList' component.
           - If 'isLoggedIn' is false, render the 'MainPage' component.
         */}
