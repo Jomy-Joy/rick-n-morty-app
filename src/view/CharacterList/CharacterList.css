@@ -1,0 +1,22 @@
+ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  li {
+    margin: 1rem;
+    text-align: center;
+    width: 300px; 
+    border: 1px solid #ddd; 
+    background-color: #fff; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.2s; 
+  }
+  
+  li:hover {
+    transform: translateY(-5px); 
+  }
+  

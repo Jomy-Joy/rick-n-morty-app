@@ -1,0 +1,13 @@
+.Footer {
+    background-color: #333; 
+    color: #fff; 
+    text-align: center; 
+    padding: 5px; 
+    margin-top: 310px;
+    
+  }
+  
+  .Footer p {
+    font-size: 14px; 
+    font-weight: bold;
+  }

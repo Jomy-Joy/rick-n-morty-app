@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useContext } from "react";
+import Header from "./components/Header/Header";
+import MainPage from "./view/MainPage/MainPage";
+import { AuthProvider } from "./service/AuthContext.";
+import CharacterList from "./view/CharacterList/CharacterList";
+import { AuthContext } from "./service/AuthContext.";
+import Footer from "./components/Footer/Footer";
 
 function App() {
+  const isLoggedIn = useContext(AuthContext);
+  // Use the 'useContext' hook to access the 'AuthContext' and get the 'isLoggedIn' value.
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AuthProvider> {/* Wrap the components in the 'AuthProvider' to provide authentication context. */}
+        <Header />
+        {isLoggedIn ? <CharacterList /> : <MainPage />}
+         {/* Conditional rendering: 
+          - If 'isLoggedIn' is true, render the 'CharacterList' component.
+          - If 'isLoggedIn' is false, render the 'MainPage' component.
+        */}
+      </AuthProvider>
+      <Footer />
     </div>
   );
 }
