@@ -23,7 +23,7 @@ const LoginPage = () => {
     }
 
     if (password.length < 7) {
-      alert("Password should be at least 7 characters long.");
+      alert("Password should be at least 7zzx characters long.");
       return;
     }
 
@@ -40,6 +40,7 @@ const LoginPage = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)} // Update the email state on input change
+          autoFocus
         />
       </div>
       <div className="input-password">
