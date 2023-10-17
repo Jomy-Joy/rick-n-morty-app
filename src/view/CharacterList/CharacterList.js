@@ -16,7 +16,7 @@ function CharacterList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-       // const queryParams = new URLSearchParams(search);
+      
         const data = await fetch(
           `https://rickandmortyapi.com/api/character/?page=${search.page.toString()}&name=${search.name}&status=${search.status}&gender=${search.gender}&species=${search.species}`
         );
