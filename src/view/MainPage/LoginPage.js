@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../service/AuthContext.";
 import "./LoginPage.css";
+import {Button,TextField,Grid} from '@mui/material';
 
 const LoginPage = () => {
   const { login } = useContext(AuthContext);
@@ -31,28 +32,43 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <div className="input-email">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)} // Update the email state on input change
-          autoFocus
-        />
-      </div>
-      <div className="input-password">
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <button onClick={handleLogin}>Login</button>
-    </div>
-  );
+  <Grid container spacing={2} className="login-container">
+    <Grid item xs={12}>
+      <h2>Rick and Morty</h2>
+    </Grid>
+    <Grid item xs={12} 
+    alignItems="center" 
+    justifyContent= "center" 
+  
+    >
+      <TextField
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        id="E-mail"
+        label="Enter your email"
+        variant="outlined"
+        
+      />
+    </Grid>
+    <Grid item xs={12}>
+      <TextField
+        value={password}
+        type="password"
+        onChange={(e) => setPassword(e.target.value)}
+        id="Password"
+        label="Enter your password"
+        variant="outlined"
+       
+      />
+    </Grid>
+    <Grid item xs={12}>
+      <Button variant="contained" onClick={handleLogin}>
+        Login
+      </Button>
+    </Grid>
+  </Grid>
+);
 };
+
 
 export default LoginPage;

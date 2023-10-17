@@ -1,159 +1,199 @@
 import React, { useEffect, useState } from "react";
-import "./CharacterList.css";
+import {
+  Pagination,
+  TextField,
+  Select,
+  MenuItem,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Typography,
+  Grid,
+  FormControl,
+  InputLabel,
+  Box,
+} from '@mui/material';
+import Button from '@mui/material/Button';
+import fetchData from "../../service/fetchData";
+import Loader from "../../components/Loader/Loader";
+
 
 function CharacterList() {
   const [characters, setCharacters] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [expandedCharacter, setExpandedCharacter] = useState(null);
   const [search, setSearch] = useState({
     page: 1,
     name: '',
     status: '',
     gender: '',
-    species: ''
+    species: '',
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-      
-        const data = await fetch(
-          `https://rickandmortyapi.com/api/character/?page=${search.page.toString()}&name=${search.name}&status=${search.status}&gender=${search.gender}&species=${search.species}`
-        );
-        if (data.ok) {
-          const response = await data.json();
-          setCharacters(response.results);
-          setTotalPages(response.info.pages);
-        }
-        else {
-          console.error('Error fetching character data');
-        }
-      } catch (error) {
-        console.error('Error fetching character data', error);
-      }
-    };
 
-    fetchData();
-  }, [search]);
-  console.log(characters)
-
-  const handleFilter = (query) => {
-    setCharacters([]);
-    setSearch({ ...search, name: query, page: 1 });
-  };
-
+  const handleSubmit = () =>{
+    fetchData(setLoading,search,setCharacters,setTotalPages)
+  }
+useEffect(() =>{
+  fetchData(setLoading,search,setCharacters,setTotalPages)
+},[search.page])
+  
   const handleToggleDetails = (character) => {
     setExpandedCharacter((prevCharacter) =>
       prevCharacter?.id === character.id ? null : character
     );
   };
 
-  const handleNextPage = () => {
-    if (search.page < totalPages) {
-      setSearch({ ...search, page: search.page + 1 });
-    }
-  };
 
-  const handlePrevPage = () => {
-    if (search.page > 1) {
-      setSearch({ ...search, page: search.page - 1 });
-    }
-  };
+const handleChange = (e) =>{
+  setSearch((prevState) =>{
+    return {...prevState, [e.target.name] : e.target.value,page :1}
+  })
+}
+const handlePagechange = (e,value) =>{
+  setSearch((prevState) =>{
+    return {...prevState, page : value}
+  })
 
-  // const handleHideDetails = () => {
-  //   setExpandedCharacter(null);
-  // };
+}
 
-  const handleFilterOptions = (key, value) => {
-    setCharacters([]);
-    setSearch({ ...search, [key]: value, page: 1 });
-  };
-
+console.log(search)
   return (
-    <div className="ricknmorty">
-      <h2>Rick & Morty </h2>
-      <div className='filter-section'>
-      <input
-          type="text"
-          placeholder="Search characters..."
-          onChange={(e) => handleFilter(e.target.value)}
-        />
-        <div className="filter-options">
-          <select
-            value={search.gender}
-            onChange={(e) => handleFilterOptions("gender", e.target.value)}
-          >
-            <option value=""> Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Genderless">Genderless</option>
-            <option value="unknown">Unknown</option>
-          </select>
-          <select
-            value={search.status}
-            onChange={(e) => handleFilterOptions("status", e.target.value)}
-          >
-            <option value="">Status</option>
-            <option value="Alive">Alive</option>
-            <option value="Dead">Dead</option>
-            <option value="unknown">Unknown</option>
-          </select>
-          <select
-            value={search.species}
-            onChange={(e) => handleFilterOptions("species", e.target.value)}
-          >
-            <option value=""> Species</option>
-            <option value="Human">Human</option>
-            <option value="Alien">Alien</option>
-            <option value="Animal">Animal</option>
-            <option value="unknown">Unknown</option>
-          </select>
-        </div>
-      </div>
+    <div className="ricknmorty" style={{ margin: '20px' }}>
+      <h2> </h2>
+
+      <Box display="flex" alignItems="center" justifyContent='center' mb={3}>
+        <TextField
       
+          label="Search characters..."
+          name='name'
+          variant="outlined"
+          onChange={handleChange}
+        />
+        <Box mx={2} />
+         <Button onClick={handleSubmit} variant="contained" color="primary">
+          Submit
+        </Button> 
+      </Box>
 
-      <ul>
-        {characters.map((character) => {
-          return (
-            <li key={character.id}>
-              <div className="character-card">
-                <img src={character.image} alt={character.name} />
-                <div className="character-info">
-                  <p>{character.name}</p>
-                  <button onClick={() => handleToggleDetails(character)}>
-                    Details
-                  </button>
-                </div>
-                {expandedCharacter && expandedCharacter.id === character.id && (
-                  <div className="character-details">
-                    <h3>Character Details</h3>
-                    <p>Name: {character.name}</p>
-                    <p>Status: {character.status}</p>
-                    <p>Species: {character.species}</p>
-                    <p>Gender: {character.gender}</p>
-                  </div>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <Grid container  spacing={2} columns={{xs:4,md:12,sm:4}} > 
+      <Grid item md={4} sm={12} xs={12}>
+      <FormControl  fullWidth style={{ marginBottom: '10px' }}>
+          <InputLabel>Gender</InputLabel>
+          <Select
+            name="gender"
+            label="Gender"
+            value={search.gender}
+            onChange={handleChange}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+            <MenuItem value="Genderless">Genderless</MenuItem>
+            <MenuItem value="unknown">Unknown</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item md={4} sm={12} xs={12}>
+      <FormControl fullWidth style={{ marginBottom: '10px' }}>
+          <InputLabel>Status</InputLabel>
+          <Select
+            name="status"
+            label="Status"
+            value={search.status}
+            onChange={handleChange}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="Alive">Alive</MenuItem>
+            <MenuItem value="Dead">Dead</MenuItem>
+            <MenuItem value="unknown">Unknown</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
 
-      <div className='pagination'>
-        <button onClick={handlePrevPage} disabled={search.page === 1}>
-          Previous Page
-        </button>
-        <span className="page-indicator">
-          {search.page}/{totalPages}
-        </span>
-        <button onClick={handleNextPage} disabled={search.page === totalPages}>
-          Next Page
-        </button>
-      </div>
+      <Grid item md={4} sm={12} xs={12}>
+      <FormControl fullWidth style={{ marginBottom: '10px' }}>
+          <InputLabel>Species</InputLabel>
+          <Select
+            name="species"
+            label="Species"
+            value={search.species}
+            onChange={handleChange}
+          >
+            <MenuItem value="">All</MenuItem>
+            <MenuItem value="Human">Human</MenuItem>
+            <MenuItem value="Alien">Alien</MenuItem>
+            <MenuItem value="Animal">Animal</MenuItem>
+            <MenuItem value="unknown">Unknown</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
 
+    
+      </Grid>
+
+      <Grid container spacing={2}>
+        {!loading ? characters.map((character) => (
+          <Grid item key={character.id} xs={12} sm={6} md={3} columnSpacing={{md:3}} spacing={3} >
+            <Card style={{textAlign: 'center' }}>
+              <CardMedia
+                component="img"
+                alt={character.name}
+                height="300"
+                image={character.image}
+              />
+              <CardContent>
+                <Typography variant="h6" component="div">
+                  {character.name}
+                </Typography>
+              </CardContent>
+              <CardActions style={{ justifyContent: 'center' }}>
+                <Button
+                  onClick={() => handleToggleDetails(character)}
+                  variant="outlined"
+                  color="primary"
+                >Details
+                </Button>
+              </CardActions>
+            </Card>
+            {expandedCharacter && expandedCharacter.id === character.id && (
+              <Card style={{ textAlign: 'center' }}>
+                <CardContent>
+                  <Typography variant="h6" component="div">
+                    Character Details
+                  </Typography>
+                  <Typography>Name: {character.name}</Typography>
+                  <Typography>Status: {character.status}</Typography>
+                  <Typography>Species: {character.species}</Typography>
+                  <Typography>Gender: {character.gender}</Typography>
+                </CardContent>
+              </Card>
+            )}
+          </Grid>
+        )):<Loader/>}
+        
+      </Grid>
+
+      <Box display="flex" justifyContent="center">
+        <div className="pagination" style={{marginTop:"20px",marginBottom:"20px"}}>
+    
+          <Pagination
+  
+            count={totalPages}
+            page={search.page}
+            onChange={handlePagechange}
+            variant="outlined"
+            shape="rounded"
+            color="primary"
+          />
+      
+        </div>
+      </Box >
     </div>
-  );
-};
 
+  );
+}
 
 export default CharacterList;
