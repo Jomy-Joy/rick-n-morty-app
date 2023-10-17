@@ -12,7 +12,6 @@ const LoginPage = () => {
   const handleLogin = () => {
     if (email.trim() === "" || password.trim() === "") {
       alert("Please fill in both email and password fields.");
-      return;
     }
 
     if (!email.includes("@")) {
@@ -23,7 +22,7 @@ const LoginPage = () => {
     }
 
     if (password.length < 7) {
-      alert("Password should be at least 7zzx characters long.");
+      alert("Password should be at least 7 characters long.");
       return;
     }
 

@@ -4,8 +4,10 @@ import CharacterList from "../CharacterList/CharacterList";
 import { AuthContext } from "../../service/AuthContext.";
 
 const MainPage = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  return <div>{isLoggedIn ? <CharacterList /> : <LoginPage />}</div>;
+  const { isLoggedIn }   = useContext(AuthContext);
+  return <div>{isLoggedIn ?
+     <CharacterList /> : <LoginPage />}
+     </div>;
 };
 
 export default MainPage;

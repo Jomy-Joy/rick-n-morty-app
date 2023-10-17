@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     
     <div className="Footer">
-        <p>2023 The Cartoon Network, Inc. All Rights Reserved.</p>
+        <p>Jomy Joy @2023</p>
         </div>
   )
 }
